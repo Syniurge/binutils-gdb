@@ -1858,7 +1858,7 @@ extern struct type *lookup_methodptr_type (struct type *);
 
 extern void smash_to_method_type (struct type *type, struct type *self_type,
 				  struct type *to_type, struct field *args,
-				  int nargs, int varargs);
+				  int nargs, int varargs, unsigned calling_convention);
 
 extern void smash_to_memberptr_type (struct type *, struct type *,
 				     struct type *);

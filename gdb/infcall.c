@@ -39,6 +39,7 @@
 #include "top.h"
 #include "interps.h"
 #include "thread-fsm.h"
+#include "dwarf2.h"
 #include <algorithm>
 
 /* If we can't find a function's name from its address,
@@ -1056,12 +1057,26 @@ call_function_by_hand_dummy (struct value *function,
     }
 
   std::vector<struct value *> new_args;
+  if (TYPE_CALLING_CONVENTION(ftype) == DW_CC_D_dmd)
+    {
+      /* Reverse the order of explicit arguments to match the odd DMD/LDC's
+         extern(D) calling convention.  */
+      int first_explicit = 0;
+	  if (TYPE_CODE (ftype) == TYPE_CODE_METHOD
+          || TYPE_CODE (ftype) == TYPE_CODE_METHODPTR)
+        first_explicit++;
+
+      std::copy (&args[0], &args[first_explicit], std::back_inserter (new_args));
+      std::reverse_copy (&args[first_explicit], &args[nargs], std::back_inserter (new_args));
+      args = new_args.data ();
+    }
   if (hidden_first_param_p)
     {
       /* Add the new argument to the front of the argument list.  */
       new_args.push_back
 	(value_from_pointer (lookup_pointer_type (values_type), struct_addr));
-      std::copy (&args[0], &args[nargs], std::back_inserter (new_args));
+      if (new_args.size() == 1)
+        std::copy (&args[0], &args[nargs], std::back_inserter (new_args));
       args = new_args.data ();
       nargs++;
     }

@@ -15437,7 +15437,8 @@ dwarf2_add_member_fn (struct field_info *fip, struct die_info *die,
 			    TYPE_TARGET_TYPE (this_type),
 			    TYPE_FIELDS (this_type),
 			    TYPE_NFIELDS (this_type),
-			    TYPE_VARARGS (this_type));
+			    TYPE_VARARGS (this_type),
+			    TYPE_CALLING_CONVENTION (this_type));
 
       /* Handle static member functions.
          Dwarf2 has no clean way to discern C++ static and non-static
@@ -15643,7 +15644,7 @@ quirk_gcc_member_function_pointer (struct type *type, struct objfile *objfile)
   new_type = alloc_type (objfile);
   smash_to_method_type (new_type, self_type, TYPE_TARGET_TYPE (pfn_type),
 			TYPE_FIELDS (pfn_type), TYPE_NFIELDS (pfn_type),
-			TYPE_VARARGS (pfn_type));
+			TYPE_VARARGS (pfn_type), 0);
   smash_to_methodptr_type (type, new_type);
 }
 
@@ -17034,7 +17035,7 @@ read_tag_ptr_to_member_type (struct die_info *die, struct dwarf2_cu *cu)
 
       smash_to_method_type (new_type, domain, TYPE_TARGET_TYPE (to_type),
 			    TYPE_FIELDS (to_type), TYPE_NFIELDS (to_type),
-			    TYPE_VARARGS (to_type));
+			    TYPE_VARARGS (to_type), TYPE_CALLING_CONVENTION (to_type));
       type = lookup_methodptr_type (new_type);
     }
   else

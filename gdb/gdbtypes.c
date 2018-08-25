@@ -1450,7 +1450,7 @@ smash_to_methodptr_type (struct type *type, struct type *to_type)
 void
 smash_to_method_type (struct type *type, struct type *self_type,
 		      struct type *to_type, struct field *args,
-		      int nargs, int varargs)
+		      int nargs, int varargs, unsigned calling_convention)
 {
   smash_type (type);
   TYPE_CODE (type) = TYPE_CODE_METHOD;
@@ -1461,6 +1461,7 @@ smash_to_method_type (struct type *type, struct type *self_type,
   if (varargs)
     TYPE_VARARGS (type) = 1;
   TYPE_LENGTH (type) = 1;	/* In practice, this is never needed.  */
+  TYPE_CALLING_CONVENTION (type) = calling_convention;
 }
 
 /* A wrapper of TYPE_NAME which calls error if the type is anonymous.
@@ -2707,7 +2708,7 @@ check_stub_method (struct type *type, int method_id, int signature_id)
   /* MTYPE may currently be a function (TYPE_CODE_FUNC).
      We want a method (TYPE_CODE_METHOD).  */
   smash_to_method_type (mtype, type, TYPE_TARGET_TYPE (mtype),
-			argtypes, argcount, p[-2] == '.');
+			argtypes, argcount, p[-2] == '.', 0);
   TYPE_STUB (mtype) = 0;
   TYPE_FN_FIELD_STUB (f, signature_id) = 0;
 

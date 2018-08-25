@@ -2531,6 +2531,7 @@ read_and_display_attr_value (unsigned long           attribute,
 	case DW_CC_pass_by_value: printf ("(pass by value)"); break;
 	case DW_CC_GNU_renesas_sh: printf ("(Rensas SH)"); break;
 	case DW_CC_GNU_borland_fastcall_i386: printf ("(Borland fastcall i386)"); break;
+	case DW_CC_D_dmd: printf ("(extern(D) DMD/LDC)"); break;
 	default:
 	  if (uvalue >= DW_CC_lo_user
 	      && uvalue <= DW_CC_hi_user)

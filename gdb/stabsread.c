@@ -1978,7 +1978,7 @@ again:
 	    return error_type (pp, objfile);
 	  type = dbx_alloc_type (typenums, objfile);
 	  smash_to_method_type (type, domain, return_type, args,
-				nargs, varargs);
+				nargs, varargs, 0);
 	}
       break;
 
